@@ -1,2 +1,29 @@
-# pylint_plugin_proxy
-small pylint plugin loading additional transform plugin stored on module, package or local path.
+# Pylint Plugin Proxy #
+
+The Pylint Plugin Proxy allows to define and distribute pylint astrioid
+transform and in future also likely type inference plugins with the python
+module they provide additional static knowledge for. 
+
+## Usage ##
+Add the path the Pylint Plugin Proxy module is stored to the PYTHON path
+envirionment variable. Activate the plugin on the commandline by calling
+
+` pylint --load-plugins=pylint_plugin_proxy <filetolint>.py `
+
+or set the correspoinding parameter in the pylintrc file accordingly.
+
+## Create local plugin ##
+
+Change to the directory where `MyModule.py` is stored and create the corresponding
+`MyModule.ast.py` plugin module by typing
+
+`
+editor MyModule.ast.py
+`
+
+An example on how to write a transform plugin can be found on 
+<https://pylint.readthedocs.io/en/latest/how_tos/transform_plugins.html>
+
+
+
+
