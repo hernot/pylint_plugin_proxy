@@ -25,5 +25,5 @@ An example on how to write a transform plugin can be found on
 <https://pylint.readthedocs.io/en/latest/how_tos/transform_plugins.html>
 
 
-
+The next time pylint is called using the above line `MyModule.ast.py` plugin module will be loaded and used when a class defined in `MyModule.py` is encountered by Pylint. 
 
