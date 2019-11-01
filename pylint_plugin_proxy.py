@@ -82,6 +82,7 @@ def transform_proxy(node):
     _knownmodules[_modulename] = _knownmodules[_nodename] = _modulespec
     # done let the local ast node transforms for astroid.ClassDef nodes do
     # the transforms and typeinferences just imported
+    return node
 
 for _interestedin in _nodesofinterest:
     astroid.MANAGER.register_transform(_interestedin, transform_proxy)
