@@ -27,12 +27,12 @@ def transform_proxy(node):
     """
     if not isinstance(node, _nodesofinterest):
         # node not of interest
-        return
+        return node
     _nodename = node.qname()
     _nodemodule = _knownmodules.get(_nodename)
     if _nodemodule:
         # transform plugin already loaded do not bother any further
-        return
+        return node
     # find defining module
     _module = node
     while _module:
@@ -43,7 +43,7 @@ def transform_proxy(node):
     if _module is None:
         # no module found along ast tree ignore node
         _knownmodules[_nodename] = _nomodule
-        return
+        return node
     # check if module defining node has already been checked
     _modulename = _module.qname()
     _nodemodule = _knownmodules.get(_modulename)
@@ -51,12 +51,12 @@ def transform_proxy(node):
         # node is defined by module corresponding astoid transforms and type inferences
         # have already been loaded
         _knownmodules[_nodename] = _nodemodule
-        return
+        return node
     # check if on the same path a astroid transform and type inference plugin
     # can be found and import it
     if not _module.file:
         _knownmodules[_modulename] = _knownmodules[_nodename] = _nomodule
-        return
+        return node
     _package = _module
     _moduleastpath,_fn = ospath.split(_module.file)
     _moduleprefix = ospath.splitext(_fn)[0]
@@ -66,18 +66,18 @@ def transform_proxy(node):
     if _modulespec is None:
         # remember that no ast module exists for node and corresponding module
         _knownmodules[_modulename] = _knownmodules[_nodename] = _nomodule
-        return
+        return node
     # try to import plugin module
     _nodemodule = importlib.util.module_from_spec(_modulespec)
     if _nodemodule is None:
         _knownmodules[_modulename] = _knownmodules[_nodename] = _nomodule
-        return
+        return node
     try:
         _modulespec.loader.exec_module(_nodemodule)
     except FileNotFoundError:
         # remember that no ast module exists for node and corresponding module
         _knownmodules[_modulename] = _knownmodules[_nodename] = _nomodule
-        return
+        return node
 
     _knownmodules[_modulename] = _knownmodules[_nodename] = _modulespec
     # done let the local ast node transforms for astroid.ClassDef nodes do
